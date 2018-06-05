@@ -8,7 +8,7 @@ export default class MobileHeader extends Component {
 			<header className="mobile_header">
 				<Row>
 					<Col span={2}></Col>
-					<Col span={3}>
+					<Col span={4}>
 						<a className="logo" href="/">
 							<img src={logoUrl} alt="logo"/>
 							<span>React News</span>

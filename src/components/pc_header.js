@@ -6,7 +6,7 @@ export default class PCHeader extends Component {
 	constructor() {
 		super();
 		this.state = {
-			current: 'toutiao',
+			current: 'top',
 		}
 	}
 	handleClick = (e) => {
@@ -20,7 +20,7 @@ export default class PCHeader extends Component {
 			<header className="pc_header">
 				<Row>
 					<Col span={2}></Col>
-					<Col span={3}>
+					<Col span={4}>
 						<a className="logo" href="/">
 							<img src={logoUrl} alt="logo"/>
 							<span>React News</span>
@@ -28,7 +28,7 @@ export default class PCHeader extends Component {
 					</Col>
 					<Col span={16}>
 						<Menu onClick={this.handleClick} mode="horizontal" selectedKeys={[this.state.current]}>
-							<Menu.Item key="toutiao">
+							<Menu.Item key="top">
 								<Icon type="appstore" />头条
 							</Menu.Item>
 							<Menu.Item key="shehui">
