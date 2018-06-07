@@ -9,7 +9,7 @@ const formItemLayout = {
 	wrapperCol: { span: 18 }
 };
 
-export default class PCHeader extends Component {
+export class PCHeader extends Component {
 	constructor() {
 		super();
 		this.state = {
@@ -42,10 +42,15 @@ export default class PCHeader extends Component {
 	};
 	handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(1);
+		this.props.form.validateFields((err, values) => {
+			if (!err) {
+				console.log('Received values of form: ', values);
+			}
+		});
 	};
 
 	render() {
+		const { getFieldProps } = this.props.form;
 		const userShow = this.state.hasLogined
 			? <Menu.Item key="logout" class="register">
 				<Button type="primary" htmlType="button">{this.state.userNickName}</Button>
@@ -104,10 +109,12 @@ export default class PCHeader extends Component {
 								<TabPane tab="登录" key="1">
 									<Form layout="horizontal" onSubmit={this.handleSubmit}>
 										<FormItem {...formItemLayout} label="用户名">
-											<Input placeholder="请输入用户名"/>
+											<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }}/>}
+											       placeholder="请输入用户名" {...getFieldProps('userName')}/>
 										</FormItem>
 										<FormItem {...formItemLayout} label="密码">
-											<Input type="password" placeholder="请输入密码"/>
+											<Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }}/>} type="password"
+											       placeholder="请输入密码" {...getFieldProps('password')}/>
 										</FormItem>
 										<Button type="primary" htmlType="submit">登录</Button>
 									</Form>
@@ -115,13 +122,13 @@ export default class PCHeader extends Component {
 								<TabPane tab="注册" key="2">
 									<Form layout="horizontal" onSubmit={this.handleSubmit}>
 										<FormItem {...formItemLayout} label="用户名">
-											<Input placeholder="请输入用户名"/>
+											<Input placeholder="请输入用户名" {...getFieldProps('r_userName')}/>
 										</FormItem>
 										<FormItem {...formItemLayout} label="密码">
-											<Input type="password" placeholder="请输入密码"/>
+											<Input type="password" placeholder="请输入密码" {...getFieldProps('r_password')}/>
 										</FormItem>
 										<FormItem {...formItemLayout} label="确认密码">
-											<Input type="password" placeholder="请再次输入密码"/>
+											<Input type="password" placeholder="请再次输入密码" {...getFieldProps('r_confirmPassword')}/>
 										</FormItem>
 										<Button type="primary" htmlType="submit">注册</Button>
 									</Form>
@@ -135,3 +142,5 @@ export default class PCHeader extends Component {
 		);
 	}
 }
+
+export default PCHeader = Form.create({})(PCHeader);
