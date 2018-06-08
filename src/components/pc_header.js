@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logoUrl from '../images/logo.png';
-import { Row, Col, Menu, Icon, Button, Modal, Tabs, Form, Input } from 'antd';
+import { Row, Col, message, Menu, Icon, Button, Modal, Tabs, Form, Input } from 'antd';
+import 'whatwg-fetch'
 
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
@@ -15,8 +16,10 @@ export class PCHeader extends Component {
 		this.state = {
 			current: 'top',
 			modalVisible: true,
+			action: 'login',
 			hasLogined: false,
-			userNickName: ''
+			userNickName: '',
+			userid: ''
 		};
 	}
 
@@ -42,10 +45,27 @@ export class PCHeader extends Component {
 	};
 	handleSubmit = (e) => {
 		e.preventDefault();
+		let myFetchOptions = {
+			method: 'GET'
+		};
 		this.props.form.validateFields((err, values) => {
 			if (!err) {
-				console.log('Received values of form: ', values);
+				fetch('http://newsapi.gugujiankong.com/Handler.ashx?action=' + this.state.action
+					+ '&username=' + values.userName + '&password=' + values.password
+					+ '&r_userName=' + values.r_userName + '&r_password='
+					+ values.r_password + '&r_confirmPassword='
+					+ values.r_confirmPassword, myFetchOptions)
+					.then(response => response.json())
+					.then(json => {
+						console.log(json);
+						this.setState({ userNickName: json.NickUserName, userid: json.UserId });
+					});
 			}
+			if (this.state.action === 'login') {
+				this.setState({ hasLogined: true });
+			}
+			message.success('请求成功！');
+			this.setState({ modalVisible: false });
 		});
 	};
 
